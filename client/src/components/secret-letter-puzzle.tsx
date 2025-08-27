@@ -244,7 +244,7 @@ export default function SecretLetterPuzzle({
                 <div className="text-center">
                   <p className="text-lg text-gray-700 mb-4 font-dancing">
                     {currentRiddle.question}
-                  </p>
+                            className={`relative w-20 h-20 rounded-full border-4 transition-all duration-300 flex items-center justify-center ${
 
                   <div className="space-y-4">
                     <Input
@@ -253,7 +253,7 @@ export default function SecretLetterPuzzle({
                       placeholder="Digite sua resposta..."
                       className="text-center text-lg"
                       onKeyPress={(e) => e.key === "Enter" && checkAnswer()}
-                      data-testid="puzzle-answer-input"
+                            <Heart className="w-8 h-8 fill-current" />
                     />
 
                     <div className="flex justify-center space-x-3">
@@ -411,7 +411,7 @@ export default function SecretLetterPuzzle({
                       ficará bloqueada.
                     </p>
                   </div>
-
+                    <div className="grid grid-cols-2 gap-8 max-w-xs mx-auto justify-items-center">
                   <Button
                     onClick={checkPersonalAnswer}
                     disabled={selectedAnswer === null}
