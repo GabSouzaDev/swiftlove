@@ -6,9 +6,10 @@ interface SimpleAudioPlayerProps {
   src?: string;
   title?: string;
   onEnded?: () => void;
+  loop?: boolean;
 }
 
-export default function SimpleAudioPlayer({ src, title, onEnded }: SimpleAudioPlayerProps) {
+export default function SimpleAudioPlayer({ src, title, onEnded, loop }: SimpleAudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -32,9 +33,15 @@ export default function SimpleAudioPlayer({ src, title, onEnded }: SimpleAudioPl
     };
 
     const handleEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-      onEnded?.();
+      if (loop) {
+        // Se está em loop, reinicia a música
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        setIsPlaying(false);
+        setCurrentTime(0);
+        onEnded?.();
+      }
     };
 
     const handlePlay = () => setIsPlaying(true);

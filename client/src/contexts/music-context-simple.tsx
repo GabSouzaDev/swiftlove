@@ -3,6 +3,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 interface Song {
   title: string;
   url: string;
+  loop?: boolean;
 }
 
 interface MusicContextType {
@@ -24,7 +25,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
 
   const playSong = (song: Song) => {
-    console.log('🎵 Música selecionada:', song.title);
+    console.log('🎵 Música selecionada:', song.title, song.loop ? '(em loop)' : '');
     setCurrentSong(song);
   };
 
