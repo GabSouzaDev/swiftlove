@@ -42,29 +42,24 @@ const riddles = [
 
 const personalQuestions = [
   {
-    question: "Quando nos vimos pela primeira vez? Pense bem...",
-    options: ["Na igreja", "Em um aniversário", "Na porta de casa", "Na rua"],
-    correctAnswer: 2, // índice da resposta correta (C)
+    question: "Qual a sua cor favorita?",
+    type: "text",
+    correctAnswers: ["laranja", "alaranjado", "laranjado"],
   },
   {
-    question: "Quando é o nosso aniversário?",
-    options: ["28 de março", "30 de março", "11 de março", "1 de abril"],
-    correctAnswer: 0, // índice da resposta correta (A)
+    question: "Qual seu anime favorito?",
+    type: "text", 
+    correctAnswers: ["naruto"],
   },
   {
-    question: "Qual o meu anime favorito?",
-    options: ["Naruto", "Full Metal Alchemist", "One Piece", "Attack on Titan"],
-    correctAnswer: 2, // índice da resposta correta (C)
+    question: "Qual o nome do nosso bichinho?",
+    type: "text",
+    correctAnswers: ["jennie", "breu", "nescau"],
   },
   {
-    question: "Para onde fomos no nosso primeiro encontro?",
-    options: ["Restaurante", "Cinema", "Balada", "Praia"],
-    correctAnswer: 1, // índice da resposta correta (B)
-  },
-  {
-    question: "O quanto eu te amo?",
-    options: ["Muito", "Muito muito", "Muito muito muito", "Patodavida!!!"],
-    correctAnswer: 3, // índice da resposta correta (D)
+    question: "Para onde vamos no final do ano?",
+    type: "text",
+    correctAnswers: ["comic con", "são paulo", "sp"],
   },
 ];
 
@@ -95,7 +90,7 @@ export default function SecretLetterPuzzle({
   const [currentPersonalQuestion] = useState(
     personalQuestions[Math.floor(Math.random() * personalQuestions.length)],
   );
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [personalAnswer, setPersonalAnswer] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const { toast } = useToast();
 
@@ -126,7 +121,12 @@ export default function SecretLetterPuzzle({
   };
 
   const checkPersonalAnswer = () => {
-    if (selectedAnswer === currentPersonalQuestion.correctAnswer) {
+    const normalizedAnswer = personalAnswer.toLowerCase().trim();
+    const isCorrect = currentPersonalQuestion.correctAnswers.some(answer => 
+      normalizedAnswer.includes(answer.toLowerCase())
+    );
+
+    if (isCorrect) {
       setCurrentStep(4);
       toast({
         title: "Pergunta pessoal correta! 💕",
@@ -383,26 +383,15 @@ export default function SecretLetterPuzzle({
                     {currentPersonalQuestion.question}
                   </p>
 
-                  <div className="space-y-3 mb-6">
-                    {currentPersonalQuestion.options.map((option, index) => (
-                      <motion.button
-                        key={index}
-                        onClick={() => setSelectedAnswer(index)}
-                        className={`w-full p-4 rounded-lg border-2 transition-all duration-300 text-left ${
-                          selectedAnswer === index
-                            ? "bg-deep-rose border-deep-rose text-white"
-                            : "bg-white border-gray-300 text-gray-700 hover:border-rose-gold hover:bg-rose-gold/5"
-                        }`}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        data-testid={`option-${index}`}
-                      >
-                        <span className="font-medium mr-3">
-                          {String.fromCharCode(65 + index)} -
-                        </span>
-                        {option}
-                      </motion.button>
-                    ))}
+                  <div className="space-y-4 mb-6">
+                    <Input
+                      value={personalAnswer}
+                      onChange={(e) => setPersonalAnswer(e.target.value)}
+                      placeholder="Digite sua resposta..."
+                      className="text-center text-lg"
+                      onKeyPress={(e) => e.key === "Enter" && checkPersonalAnswer()}
+                      data-testid="personal-answer-input"
+                    />
                   </div>
 
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
@@ -414,7 +403,7 @@ export default function SecretLetterPuzzle({
                     <div className="grid grid-cols-2 gap-8 max-w-xs mx-auto justify-items-center">
                   <Button
                     onClick={checkPersonalAnswer}
-                    disabled={selectedAnswer === null}
+                    disabled={personalAnswer.trim() === ""}
                     className="bg-gradient-to-r from-deep-rose to-romantic-gold hover:from-romantic-gold hover:to-deep-rose text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     data-testid="button-check-personal"
                   >
