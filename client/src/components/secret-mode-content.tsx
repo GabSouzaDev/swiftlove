@@ -118,15 +118,7 @@ export default function SecretModeContent({
         transition={{ duration: 0.8, delay: 0.8 }}
       >
         <p className="text-lg md:text-xl leading-relaxed text-gray-700 mb-4 love-text">
-          Você tem 11 maridos e ainda consegue tempo pra mim… isso é
-          praticamente um milagre interdimensional! Entre os compromissos com os
-          sete do BTS (imagino que o V esteja encarregado do café da manhã), os
-          treinos ninja com o Naruto, as patrulhas noturnas com Oliver Queen e
-          as corridas temporais com Barry Allen, fico aqui torcendo pra ser o
-          único que não precisa salvar o mundo — só o seu coração 💛. Mas tudo
-          bem, eu aceito ser o último da fila… porque no final, sou eu quem vai
-          estar ao seu lado quando os créditos finais subirem. E prometo: sem
-          efeitos especiais, só amor real.
+          Você tem 12 maridos e ainda consegue tempo pra mim… isso é praticamente um milagre interdimensional! Entre os compromissos com os sete do BTS (imagino que o V esteja encarregado do café da manhã), os treinos ninja com o Naruto, as patrulhas noturnas com Oliver Queen, as corridas temporais com Barry Allen e as missões aquáticas com Percy Jackson — que provavelmente está te levando pra um passeio no campo de morangos — fico aqui torcendo pra ser o único que não precisa salvar o mundo… só o seu coração 💛. Mas tudo bem, eu aceito ser o último da fila… porque no final, sou eu quem vai estar ao seu lado quando os créditos finais subirem. E prometo: sem efeitos especiais, só amor real.
         </p>
         <div className="flex justify-end mt-4">
           <Heart className="w-6 h-6 opacity-60 text-rose-gold" />

@@ -12,6 +12,7 @@ import RelationshipTimer, { TimeData } from "@/components/relationship-timer";
 import RandomLetterGenerator from "@/components/random-letter-generator";
 import SecretLetterPuzzle from "@/components/secret-letter-puzzle";
 import SecretModeContent from "@/components/secret-mode-content";
+import TaylorSwiftQuiz from "@/components/taylor-swift-quiz";
 import { Button } from "@/components/ui/button";
 
 const songTitles = [
@@ -78,8 +79,10 @@ export default function Home() {
     minutes: 0,
     seconds: 0,
   });
-  const [isSecretMode, setIsSecretMode] = useState(false);
+  const [isSecretMode, setIsSecretMode] = useState(true); // Começar no modo secreto
   const [secretLetterUnlocked, setSecretLetterUnlocked] = useState(false);
+  const [normalModeUnlocked, setNormalModeUnlocked] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { playSong, currentSong } = useMusic();
 
   // Ler parâmetros da URL na inicialização
@@ -177,18 +180,46 @@ export default function Home() {
           </motion.div>
 
           <div className="flex items-center space-x-4">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={() => setIsSecretMode(true)}
-                variant="outline"
-                className="border-2 border-deep-rose text-deep-rose hover:bg-deep-rose hover:text-white px-4 py-2 font-dancing"
-                data-testid="button-secret-mode-header"
-              >
-                <Lock className="w-4 h-4 mr-2" />
-                <Star className="w-3 h-3 mr-1" />
-                Modo Secreto
-              </Button>
-            </motion.div>
+            {normalModeUnlocked && (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => {
+                    setIsSecretMode(!isSecretMode);
+                    setShowQuiz(false);
+                  }}
+                  variant="outline"
+                  className="border-2 border-deep-rose text-deep-rose hover:bg-deep-rose hover:text-white px-4 py-2 font-dancing"
+                  data-testid="button-toggle-mode"
+                >
+                  {isSecretMode ? (
+                    <>
+                      <Heart className="w-4 h-4 mr-2" />
+                      Modo Normal
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4 mr-2" />
+                      <Star className="w-3 h-3 mr-1" />
+                      Modo Secreto
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            )}
+            
+            {!normalModeUnlocked && !showQuiz && (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowQuiz(true)}
+                  variant="outline"
+                  className="border-2 border-romantic-gold text-romantic-gold hover:bg-romantic-gold hover:text-white px-4 py-2 font-dancing"
+                  data-testid="button-unlock-normal"
+                >
+                  <Music className="w-4 h-4 mr-2" />
+                  Desbloquear Modo Normal
+                </Button>
+              </motion.div>
+            )}
 
             <PersonalizationForm
               onPersonalize={handlePersonalize}
@@ -214,15 +245,19 @@ export default function Home() {
           transition={{ duration: 1 }}
         >
           <h1 className="font-playfair text-5xl md:text-7xl font-bold text-gradient mb-6 animate-gentle-glow">
-            {isSecretMode && secretLetterUnlocked
-              ? "💎 Segredos do Coração"
-              : fromName && toName !== "você"
-                ? `" Uma Declaração de Amor de ${fromName} para ${toName}`
-                : " Uma Declaração de Amor"}
+            {showQuiz 
+              ? "🎤 Quiz da Taylor Swift"
+              : isSecretMode && secretLetterUnlocked
+                ? "💎 Segredos do Coração"
+                : isSecretMode && !secretLetterUnlocked
+                  ? "🔒 Carta Secreta"
+                  : fromName && toName !== "você"
+                    ? `" Uma Declaração de Amor de ${fromName} para ${toName}`
+                    : " Uma Declaração de Amor"}
           </h1>
 
-          {/* Botão para voltar da carta secreta */}
-          {isSecretMode && secretLetterUnlocked && (
+          {/* Botão para voltar do quiz */}
+          {showQuiz && (
             <motion.div
               className="mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -230,15 +265,12 @@ export default function Home() {
               transition={{ duration: 0.5 }}
             >
               <Button
-                onClick={() => {
-                  setIsSecretMode(false);
-                  setSecretLetterUnlocked(false);
-                }}
+                onClick={() => setShowQuiz(false)}
                 variant="outline"
                 className="border-2 border-deep-rose text-deep-rose hover:bg-deep-rose hover:text-white px-6 py-3 font-dancing"
-                data-testid="button-back-to-public"
+                data-testid="button-back-from-quiz"
               >
-                ← Voltar para Modo Normal
+                ← Voltar à Carta Secreta
               </Button>
             </motion.div>
           )}
@@ -268,10 +300,26 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Love Declaration ou Modo Carta Secreta */}
+      {/* Love Declaration, Quiz ou Modo Carta Secreta */}
       <main className="relative z-10 px-6 pb-20">
         <div className="max-w-4xl mx-auto space-y-8">
-          {isSecretMode && !secretLetterUnlocked ? (
+          {showQuiz ? (
+            /* Quiz da Taylor Swift para desbloquear modo normal */
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="love-card rounded-2xl p-8 shadow-lg"
+            >
+              <TaylorSwiftQuiz 
+                onQuizCompleted={() => {
+                  setNormalModeUnlocked(true);
+                  setShowQuiz(false);
+                  setIsSecretMode(false);
+                }}
+              />
+            </motion.div>
+          ) : isSecretMode && !secretLetterUnlocked ? (
             /* Enigma da carta secreta */
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -289,7 +337,7 @@ export default function Home() {
             /* Modo Secreto com carta fixa */
             <SecretModeContent fromName={fromName} toName={toName} />
           ) : (
-            /* Carta pública original */
+            /* Carta pública original - só acessível após quiz */
             paragraphs.map((paragraph, index) => {
               const IconComponent = paragraph.icon;
 
@@ -362,8 +410,8 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Random Letter Generator - só mostrar se não estiver no modo secreto */}
-      {!isSecretMode && (
+      {/* Random Letter Generator - só mostrar se não estiver no modo secreto e não estiver no quiz */}
+      {!isSecretMode && !showQuiz && (
         <RandomLetterGenerator
           fromName={fromName}
           toName={toName}
