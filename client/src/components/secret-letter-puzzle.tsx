@@ -42,23 +42,47 @@ const riddles = [
 
 const personalQuestions = [
   {
+    question: "Quando nos vimos pela primeira vez? Pense bem...",
+    options: ["Na igreja", "Em um aniversário", "Na porta de casa", "Na rua"],
+    correctAnswer: 2, // índice da resposta correta (C)
+  },
+  {
+    question: "Quando é o nosso aniversário?",
+    options: ["28 de março", "30 de março", "11 de março", "1 de abril"],
+    correctAnswer: 0, // índice da resposta correta (A)
+  },
+  {
+    question: "Qual o meu anime favorito?",
+    options: ["Naruto", "Full Metal Alchemist", "One Piece", "Attack on Titan"],
+    correctAnswer: 2, // índice da resposta correta (C)
+  },
+  {
+    question: "Para onde fomos no nosso primeiro encontro?",
+    options: ["Restaurante", "Cinema", "Balada", "Praia"],
+    correctAnswer: 1, // índice da resposta correta (B)
+  },
+  {
+    question: "O quanto eu te amo?",
+    options: ["Muito", "Muito muito", "Muito muito muito", "Patodavida!!!"],
+    correctAnswer: 3, // índice da resposta correta (D)
+  },
+];
+
+const herPersonalQuestions = [
+  {
     question: "Qual a sua cor favorita?",
-    type: "text",
     correctAnswers: ["laranja", "alaranjado", "laranjado"],
   },
   {
     question: "Qual seu anime favorito?",
-    type: "text", 
     correctAnswers: ["naruto"],
   },
   {
     question: "Qual o nome do nosso bichinho?",
-    type: "text",
     correctAnswers: ["jennie", "breu", "nescau"],
   },
   {
     question: "Para onde vamos no final do ano?",
-    type: "text",
     correctAnswers: ["comic con", "são paulo", "sp"],
   },
 ];
@@ -90,7 +114,11 @@ export default function SecretLetterPuzzle({
   const [currentPersonalQuestion] = useState(
     personalQuestions[Math.floor(Math.random() * personalQuestions.length)],
   );
-  const [personalAnswer, setPersonalAnswer] = useState("");
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [currentHerQuestion] = useState(
+    herPersonalQuestions[Math.floor(Math.random() * herPersonalQuestions.length)],
+  );
+  const [herAnswer, setHerAnswer] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const { toast } = useToast();
 
@@ -121,15 +149,32 @@ export default function SecretLetterPuzzle({
   };
 
   const checkPersonalAnswer = () => {
-    const normalizedAnswer = personalAnswer.toLowerCase().trim();
-    const isCorrect = currentPersonalQuestion.correctAnswers.some(answer => 
+    if (selectedAnswer === currentPersonalQuestion.correctAnswer) {
+      setCurrentStep(4);
+      toast({
+        title: "Pergunta pessoal correta! 💕",
+        description: "Agora uma pergunta sobre você...",
+      });
+    } else {
+      setIsBlocked(true);
+      toast({
+        title: "Resposta incorreta 💔",
+        description: "A carta ficou bloqueada...",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const checkHerAnswer = () => {
+    const normalizedAnswer = herAnswer.toLowerCase().trim();
+    const isCorrect = currentHerQuestion.correctAnswers.some(answer => 
       normalizedAnswer.includes(answer.toLowerCase())
     );
 
     if (isCorrect) {
-      setCurrentStep(4);
+      setCurrentStep(5);
       toast({
-        title: "Pergunta pessoal correta! 💕",
+        title: "Perfeito! 💕",
         description: "Você é realmente você!...",
       });
       setTimeout(() => {
@@ -196,7 +241,7 @@ export default function SecretLetterPuzzle({
     <div className="space-y-6">
       {/* Indicador de progresso */}
       <div className="flex justify-center space-x-4 mb-6">
-        {[1, 2, 3, 4].map((step) => (
+        {[1, 2, 3, 4, 5].map((step) => (
           <div
             key={step}
             className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold transition-all duration-300 ${
@@ -215,7 +260,7 @@ export default function SecretLetterPuzzle({
               >
                 ✓
               </motion.div>
-            ) : step === 4 && currentStep === 4 ? (
+            ) : step === 5 && currentStep === 5 ? (
               <Unlock className="w-5 h-5" />
             ) : (
               step
@@ -383,15 +428,26 @@ export default function SecretLetterPuzzle({
                     {currentPersonalQuestion.question}
                   </p>
 
-                  <div className="space-y-4 mb-6">
-                    <Input
-                      value={personalAnswer}
-                      onChange={(e) => setPersonalAnswer(e.target.value)}
-                      placeholder="Digite sua resposta..."
-                      className="text-center text-lg"
-                      onKeyPress={(e) => e.key === "Enter" && checkPersonalAnswer()}
-                      data-testid="personal-answer-input"
-                    />
+                  <div className="space-y-3 mb-6">
+                    {currentPersonalQuestion.options.map((option, index) => (
+                      <motion.button
+                        key={index}
+                        onClick={() => setSelectedAnswer(index)}
+                        className={`w-full p-4 rounded-lg border-2 transition-all duration-300 text-left ${
+                          selectedAnswer === index
+                            ? "bg-deep-rose border-deep-rose text-white"
+                            : "bg-white border-gray-300 text-gray-700 hover:border-rose-gold hover:bg-rose-gold/5"
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        data-testid={`option-${index}`}
+                      >
+                        <span className="font-medium mr-3">
+                          {String.fromCharCode(65 + index)} -
+                        </span>
+                        {option}
+                      </motion.button>
+                    ))}
                   </div>
 
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
@@ -403,7 +459,7 @@ export default function SecretLetterPuzzle({
                     <div className="grid grid-cols-2 gap-8 max-w-xs mx-auto justify-items-center">
                   <Button
                     onClick={checkPersonalAnswer}
-                    disabled={personalAnswer.trim() === ""}
+                    disabled={selectedAnswer === null}
                     className="bg-gradient-to-r from-deep-rose to-romantic-gold hover:from-romantic-gold hover:to-deep-rose text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     data-testid="button-check-personal"
                   >
@@ -452,7 +508,60 @@ export default function SecretLetterPuzzle({
           </motion.div>
         )}
 
-        {currentStep === 4 && (
+        {currentStep === 4 && !isBlocked && (
+          <motion.div
+            key="step4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="love-card border-2 border-rose-gold">
+              <CardHeader className="text-center">
+                <CardTitle className="flex items-center justify-center text-deep-rose font-playfair text-xl">
+                  <Heart className="w-5 h-5 mr-2 fill-current" />
+                  Pergunta sobre Você: Para ter certeza...
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <p className="text-lg text-gray-700 mb-6 font-dancing">
+                    {currentHerQuestion.question}
+                  </p>
+
+                  <div className="space-y-4 mb-6">
+                    <Input
+                      value={herAnswer}
+                      onChange={(e) => setHerAnswer(e.target.value)}
+                      placeholder="Digite sua resposta..."
+                      className="text-center text-lg"
+                      onKeyPress={(e) => e.key === "Enter" && checkHerAnswer()}
+                      data-testid="her-answer-input"
+                    />
+                  </div>
+
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                    <p className="text-sm text-yellow-800 font-medium">
+                      ⚠️ Atenção: Você tem apenas UMA chance! Se errar, a carta
+                      ficará bloqueada.
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={checkHerAnswer}
+                    disabled={herAnswer.trim() === ""}
+                    className="bg-gradient-to-r from-deep-rose to-romantic-gold hover:from-romantic-gold hover:to-deep-rose text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    data-testid="button-check-her-answer"
+                  >
+                    Confirmar Resposta Final
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {currentStep === 5 && (
           <motion.div
             key="step4"
             initial={{ opacity: 0, scale: 0.8 }}
