@@ -252,17 +252,18 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <h1 className="font-playfair text-5xl md:text-7xl font-bold text-gradient mb-6 animate-gentle-glow">
+          <h1 className="font-playfair text-5xl md:text-7xl font-bold text-gradient mb-10 pt-8 pb-6 animate-gentle-glow break-words">
             {showQuiz 
-              ? "🎤 Quiz da Taylor Swift"
+              ? <><span role="img" aria-label="quiz" style={{filter: 'none'}} className="not-gradient">🎤</span> <span>Quiz da Taylor Swift</span></>
               : isSecretMode && secretLetterUnlocked
-                ? "💎 Segredos do Coração"
+                ? <><span role="img" aria-label="segredos" style={{filter: 'none'}} className="not-gradient">💎</span> <span>Segredos do Coração</span></>
                 : isSecretMode && !secretLetterUnlocked
-                  ? "🔒 Carta Secreta"
+                  ? <><span role="img" aria-label="carta" style={{filter: 'none'}} className="not-gradient">🔒</span> <span>Carta Secreta</span></>
                   : fromName && toName !== "você"
-                    ? `" Uma Declaração de Amor de ${fromName} para ${toName}`
-                    : " Uma Declaração de Amor"}
+                    ? <span>{`" Uma Declaração de Amor de ${fromName} para ${toName}`}</span>
+                    : <span>Uma Declaração de Amor</span>}
           </h1>
+          <style>{`.not-gradient { background: none !important; color: inherit !important; -webkit-background-clip: initial !important; }`}</style>
 
           {/* Botão para voltar do quiz */}
           {showQuiz && (

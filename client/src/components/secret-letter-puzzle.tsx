@@ -390,6 +390,7 @@ export default function SecretLetterPuzzle({
                   </p>
 
                   <div className="grid grid-cols-2 gap-6 max-w-sm mx-auto justify-items-center">
+
                     {[1, 2, 3, 4].map((heartNumber) => {
                       const isClicked = clickedHearts.includes(heartNumber);
                       const clickOrder = clickedHearts.indexOf(heartNumber) + 1;
