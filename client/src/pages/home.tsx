@@ -409,7 +409,7 @@ export default function Home() {
       {/*<ShareSection fromName={fromName} toName={toName} />*/}
 
       {/* Botão Desbloquear Extra - Final da página */}
-      {!extraModeUnlocked && !showQuiz && (
+      {!extraModeUnlocked && !showQuiz && secretLetterUnlocked && (
         <section className="relative z-10 py-12 px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <motion.div 
