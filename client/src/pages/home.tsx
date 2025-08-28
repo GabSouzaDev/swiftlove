@@ -81,7 +81,7 @@ export default function Home() {
   });
   const [isSecretMode, setIsSecretMode] = useState(true); // Começar no modo secreto
   const [secretLetterUnlocked, setSecretLetterUnlocked] = useState(false);
-  const [normalModeUnlocked, setNormalModeUnlocked] = useState(false);
+  const [extraModeUnlocked, setExtraModeUnlocked] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const { playSong, currentSong } = useMusic();
 
@@ -180,7 +180,7 @@ export default function Home() {
           </motion.div>
 
           <div className="flex items-center space-x-4">
-            {normalModeUnlocked && (
+            {extraModeUnlocked && (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => {
@@ -194,7 +194,7 @@ export default function Home() {
                   {isSecretMode ? (
                     <>
                       <Heart className="w-4 h-4 mr-2" />
-                      Modo Normal
+                      Extra
                     </>
                   ) : (
                     <>
@@ -207,7 +207,7 @@ export default function Home() {
               </motion.div>
             )}
             
-            {!normalModeUnlocked && !showQuiz && (
+            {!extraModeUnlocked && !showQuiz && (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => setShowQuiz(true)}
@@ -216,7 +216,7 @@ export default function Home() {
                   data-testid="button-unlock-normal"
                 >
                   <Music className="w-4 h-4 mr-2" />
-                  Desbloquear Modo Normal
+                  Desbloquear Extra
                 </Button>
               </motion.div>
             )}
@@ -304,7 +304,7 @@ export default function Home() {
       <main className="relative z-10 px-6 pb-20">
         <div className="max-w-4xl mx-auto space-y-8">
           {showQuiz ? (
-            /* Quiz da Taylor Swift para desbloquear modo normal */
+            /* Quiz da Taylor Swift para desbloquear modo extra */
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -313,7 +313,7 @@ export default function Home() {
             >
               <TaylorSwiftQuiz 
                 onQuizCompleted={() => {
-                  setNormalModeUnlocked(true);
+                  setExtraModeUnlocked(true);
                   setShowQuiz(false);
                   setIsSecretMode(false);
                 }}
@@ -337,7 +337,7 @@ export default function Home() {
             /* Modo Secreto com carta fixa */
             <SecretModeContent fromName={fromName} toName={toName} />
           ) : (
-            /* Carta pública original - só acessível após quiz */
+            /* Carta extra - só acessível após quiz */
             paragraphs.map((paragraph, index) => {
               const IconComponent = paragraph.icon;
 

@@ -113,7 +113,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
         </h3>
         <p className="text-lg text-gray-700 font-dancing">
           Você provou que é uma verdadeira fã da Taylor! 
-          Agora você pode acessar o modo normal.
+          Agora você pode acessar o modo extra.
         </p>
         <Award className="w-16 h-16 text-romantic-gold mx-auto" />
       </motion.div>
@@ -146,13 +146,13 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
               onClick={handleQuizComplete}
               className="bg-gradient-to-r from-rose-gold to-romantic-gold text-white px-8 py-3 font-dancing text-lg"
             >
-              Acessar Modo Normal 💕
+              Acessar Extra 💕
             </Button>
           </div>
         ) : (
           <div className="space-y-4">
             <p className="text-lg text-gray-600 font-dancing">
-              Você precisa acertar pelo menos 3 perguntas para acessar o modo normal.
+              Você precisa acertar pelo menos 3 perguntas para acessar o modo extra.
             </p>
             <Button
               onClick={handleQuizComplete}
@@ -178,7 +178,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
           Quiz da Taylor Swift 🎤
         </h3>
         <p className="font-dancing text-xl text-deep-rose">
-          Prove que você é uma verdadeira Swiftie para desbloquear o modo normal!
+          Prove que você é uma verdadeira Swiftie para desbloquear o modo extra!
         </p>
         <div className="flex justify-center items-center space-x-2 mt-4">
           <Music className="w-5 h-5 text-romantic-gold" />
