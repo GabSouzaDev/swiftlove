@@ -38,6 +38,38 @@ const riddles = [
     answer: "exile",
     hint: "Uma música melancólica sobre estar longe de quem amamos",
   },
+  {
+    question: "Complete: 'I remember it all too _____'",
+    answer: "well",
+    hint: "Uma música intensa sobre memórias de um amor perdido",
+  },
+  {
+    question: "Complete: 'You are the best thing that's ever been _____'",
+    answer: "mine",
+    hint: "Uma música sobre um amor que vale a pena lutar por",
+  },
+  {
+    question: "Complete: 'This love is _____, this love is good'",
+    answer: "alive",
+    hint: "Uma canção que fala sobre um amor que resiste ao tempo",
+  },
+  {
+    question: "Complete: 'I see sparks _____ whenever you smile'",
+    answer: "fly",
+    hint: "Uma música sobre a magia de se apaixonar",
+  },
+  {
+    question: "Complete: 'You took the time to memorize _____'",
+    answer: "me",
+    hint: "Uma música sobre ser verdadeiramente visto por alguém",
+  },
+  {
+    question: "Complete: 'I’d like to be my old _____ again'",
+    answer: "self",
+    hint: "Uma música sobre saudade de quem éramos antes de um coração partido",
+  }
+
+  
 ];
 
 const personalQuestions = [
@@ -291,7 +323,7 @@ export default function SecretLetterPuzzle({
                 <div className="text-center">
                   <p className="text-lg text-gray-700 mb-4 font-dancing">
                     {currentRiddle.question}
-                            className={`relative w-20 h-20 rounded-full border-4 transition-all duration-300 flex items-center justify-center ${
+                  </p>
 
                   <div className="space-y-4">
                     <Input
@@ -300,7 +332,7 @@ export default function SecretLetterPuzzle({
                       placeholder="Digite sua resposta..."
                       className="text-center text-lg"
                       onKeyPress={(e) => e.key === "Enter" && checkAnswer()}
-                            <Heart className="w-8 h-8 fill-current" />
+                      data-testid="puzzle-answer-input"
                     />
 
                     <div className="flex justify-center space-x-3">
@@ -458,7 +490,7 @@ export default function SecretLetterPuzzle({
                       ficará bloqueada.
                     </p>
                   </div>
-                    <div className="grid grid-cols-2 gap-8 max-w-xs mx-auto justify-items-center">
+
                   <Button
                     onClick={checkPersonalAnswer}
                     disabled={selectedAnswer === null}
