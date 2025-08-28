@@ -58,10 +58,130 @@ const questions: Question[] = [
       "Reputation"
     ],
     correct: 1
+  },
+  {
+    question: "Qual é o número da sorte da Taylor Swift?",
+    options: ["7", "13", "22", "11"],
+    correct: 1
+  },
+  {
+    question: "Em que cidade Taylor Swift nasceu?",
+    options: [
+      "Nashville",
+      "Los Angeles",
+      "West Reading", 
+      "New York"
+    ],
+    correct: 2
+  },
+  {
+    question: "Qual foi o primeiro álbum country da Taylor Swift?",
+    options: [
+      "Taylor Swift",
+      "Fearless",
+      "Speak Now",
+      "Red"
+    ],
+    correct: 0
+  },
+  {
+    question: "Quantos Grammy Awards Taylor Swift já ganhou?",
+    options: ["8", "10", "12", "Mais de 12"],
+    correct: 3
+  },
+  {
+    question: "Qual música da Taylor Swift tem a letra 'We never go out of style'?",
+    options: [
+      "Style",
+      "22",
+      "ME!",
+      "Paper Rings"
+    ],
+    correct: 0
+  },
+  {
+    question: "Qual álbum marcou a transição completa da Taylor do country para o pop?",
+    options: [
+      "Red",
+      "1989",
+      "Reputation",
+      "Lover"
+    ],
+    correct: 1
+  },
+  {
+    question: "Taylor Swift tem quantos gatos?",
+    options: ["1", "2", "3", "4"],
+    correct: 2
+  },
+  {
+    question: "Qual dessas NÃO é uma era da Taylor Swift?",
+    options: [
+      "Reputation Era",
+      "Folklore Era",
+      "Midnight Era",
+      "Golden Era"
+    ],
+    correct: 3
+  },
+  {
+    question: "Qual música da Taylor Swift foi inspirada em Shakespeare?",
+    options: [
+      "Love Story",
+      "You Belong With Me",
+      "Enchanted",
+      "Begin Again"
+    ],
+    correct: 0
+  },
+  {
+    question: "Em 'All Too Well', Taylor Swift canta sobre que item de roupa?",
+    options: [
+      "Um vestido vermelho",
+      "Um cachecol",
+      "Uma jaqueta",
+      "Sapatos vermelhos"
+    ],
+    correct: 1
+  },
+  {
+    question: "Qual foi o primeiro single do álbum 'Midnights'?",
+    options: [
+      "Anti-Hero",
+      "Lavender Haze",
+      "Mastermind",
+      "Karma"
+    ],
+    correct: 1
+  },
+  {
+    question: "Taylor Swift re-gravou seus álbuns antigos por quê?",
+    options: [
+      "Para melhorar a qualidade",
+      "Para recuperar os direitos autorais",
+      "Por diversão",
+      "A pedido dos fãs"
+    ],
+    correct: 1
+  },
+  {
+    question: "Qual dessas colaborações realmente aconteceu?",
+    options: [
+      "Taylor Swift ft. Ed Sheeran",
+      "Taylor Swift ft. Ariana Grande",
+      "Taylor Swift ft. Billie Eilish",
+      "Taylor Swift ft. Dua Lipa"
+    ],
+    correct: 0
   }
 ];
 
 export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProps) {
+  const [selectedQuestions] = useState(() => {
+    // Selecionar 5 perguntas aleatórias
+    const shuffled = [...questions].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 5);
+  });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [correctAnswers, setCorrectAnswers] = useState(0);
@@ -75,11 +195,11 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
   const handleNextQuestion = () => {
     if (selectedAnswer === null) return;
 
-    if (selectedAnswer === questions[currentQuestion].correct) {
+    if (selectedAnswer === selectedQuestions[currentQuestion].correct) {
       setCorrectAnswers(correctAnswers + 1);
     }
 
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < selectedQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
     } else {
@@ -134,7 +254,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
           {correctAnswers >= 3 ? "🎊" : "😅"}
         </div>
         <p className="text-xl font-dancing text-gray-700">
-          Você acertou {correctAnswers} de {questions.length} perguntas!
+          Você acertou {correctAnswers} de {selectedQuestions.length} perguntas!
         </p>
         
         {correctAnswers >= 3 ? (
@@ -183,7 +303,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
         <div className="flex justify-center items-center space-x-2 mt-4">
           <Music className="w-5 h-5 text-romantic-gold" />
           <span className="text-sm text-gray-600">
-            Pergunta {currentQuestion + 1} de {questions.length}
+            Pergunta {currentQuestion + 1} de {selectedQuestions.length}
           </span>
           <Music className="w-5 h-5 text-romantic-gold" />
         </div>
@@ -191,11 +311,11 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
 
       <div className="space-y-6">
         <h4 className="text-xl font-semibold text-gray-800 text-center">
-          {questions[currentQuestion].question}
+          {selectedQuestions[currentQuestion].question}
         </h4>
 
         <div className="space-y-3">
-          {questions[currentQuestion].options.map((option, index) => (
+          {selectedQuestions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
               whileHover={{ scale: 1.02 }}
@@ -223,7 +343,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
             disabled={selectedAnswer === null}
             className="bg-gradient-to-r from-rose-gold to-romantic-gold text-white px-8 py-3 font-dancing text-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {currentQuestion < questions.length - 1 ? (
+            {currentQuestion < selectedQuestions.length - 1 ? (
               <>
                 Próxima Pergunta
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -240,7 +360,7 @@ export default function TaylorSwiftQuiz({ onQuizCompleted }: TaylorSwiftQuizProp
         <div
           className="bg-gradient-to-r from-rose-gold to-romantic-gold h-2 rounded-full transition-all duration-500"
           style={{
-            width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+            width: `${((currentQuestion + 1) / selectedQuestions.length) * 100}%`,
           }}
         />
       </div>

@@ -13,6 +13,7 @@ import RandomLetterGenerator from "@/components/random-letter-generator";
 import SecretLetterPuzzle from "@/components/secret-letter-puzzle";
 import SecretModeContent from "@/components/secret-mode-content";
 import TaylorSwiftQuiz from "@/components/taylor-swift-quiz";
+import FullTaylorQuiz from "@/components/full-taylor-quiz";
 import { Button } from "@/components/ui/button";
 
 const songTitles = [
@@ -83,6 +84,7 @@ export default function Home() {
   const [secretLetterUnlocked, setSecretLetterUnlocked] = useState(false);
   const [extraModeUnlocked, setExtraModeUnlocked] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showFullQuiz, setShowFullQuiz] = useState(false);
   const { playSong, currentSong } = useMusic();
 
   // Ler parâmetros da URL na inicialização
@@ -159,6 +161,12 @@ export default function Home() {
     setSecretLetterUnlocked(true);
   };
 
+  if (showFullQuiz) {
+    return (
+      <FullTaylorQuiz onClose={() => setShowFullQuiz(false)} />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-soft-lavender to-rose-gold overflow-x-hidden">
       {!audioUnlocked && (
@@ -207,6 +215,19 @@ export default function Home() {
               </motion.div>
             )}
             
+            {extraModeUnlocked && (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowFullQuiz(true)}
+                  variant="outline"
+                  className="border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white px-4 py-2 font-dancing"
+                  data-testid="button-full-quiz"
+                >
+                  <Music className="w-4 h-4 mr-2" />
+                  Modo Quiz
+                </Button>
+              </motion.div>
+            )}
 
             <PersonalizationForm
               onPersonalize={handlePersonalize}
