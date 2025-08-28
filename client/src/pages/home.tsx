@@ -207,19 +207,6 @@ export default function Home() {
               </motion.div>
             )}
             
-            {!extraModeUnlocked && !showQuiz && (
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  onClick={() => setShowQuiz(true)}
-                  variant="outline"
-                  className="border-2 border-romantic-gold text-romantic-gold hover:bg-romantic-gold hover:text-white px-4 py-2 font-dancing"
-                  data-testid="button-unlock-normal"
-                >
-                  <Music className="w-4 h-4 mr-2" />
-                  Desbloquear Extra
-                </Button>
-              </motion.div>
-            )}
 
             <PersonalizationForm
               onPersonalize={handlePersonalize}
@@ -420,6 +407,31 @@ export default function Home() {
       )}
 
       {/*<ShareSection fromName={fromName} toName={toName} />*/}
+
+      {/* Botão Desbloquear Extra - Final da página */}
+      {!extraModeUnlocked && !showQuiz && (
+        <section className="relative z-10 py-12 px-6 text-center">
+          <div className="max-w-4xl mx-auto">
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <Button
+                onClick={() => setShowQuiz(true)}
+                variant="outline"
+                className="border-2 border-romantic-gold text-romantic-gold hover:bg-romantic-gold hover:text-white px-8 py-4 font-dancing text-xl"
+                data-testid="button-unlock-extra"
+              >
+                Não acabou 😊, clique em mim!
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="relative z-10 py-8 px-6 text-center">

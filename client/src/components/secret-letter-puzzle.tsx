@@ -116,7 +116,9 @@ export default function SecretLetterPuzzle({
   );
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [currentHerQuestion] = useState(
-    herPersonalQuestions[Math.floor(Math.random() * herPersonalQuestions.length)],
+    herPersonalQuestions[
+      Math.floor(Math.random() * herPersonalQuestions.length)
+    ],
   );
   const [herAnswer, setHerAnswer] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
@@ -167,8 +169,8 @@ export default function SecretLetterPuzzle({
 
   const checkHerAnswer = () => {
     const normalizedAnswer = herAnswer.toLowerCase().trim();
-    const isCorrect = currentHerQuestion.correctAnswers.some(answer => 
-      normalizedAnswer.includes(answer.toLowerCase())
+    const isCorrect = currentHerQuestion.correctAnswers.some((answer) =>
+      normalizedAnswer.includes(answer.toLowerCase()),
     );
 
     if (isCorrect) {
@@ -589,7 +591,8 @@ export default function SecretLetterPuzzle({
                   Parabéns! 🎉
                 </h3>
                 <p className="text-green-600 font-dancing text-lg">
-                  Você realmente me conhece! Modo secreto desbloqueado!
+                  Oi minha princesa!, Espero que goste! Modo secreto
+                  desbloqueado!
                 </p>
 
                 <div className="flex justify-center space-x-2 mt-4">
